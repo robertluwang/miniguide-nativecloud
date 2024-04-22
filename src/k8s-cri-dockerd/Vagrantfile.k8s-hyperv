@@ -33,7 +33,7 @@ cat /etc/netplan/01-netcfg.yaml
 cat /etc/resolv.conf
 
 sudo netplan apply
-
+sleep 30 
 echo eth0 setting
 
 ip addr
@@ -87,8 +87,8 @@ echo === $(date) Provisioning - k8sInstall by $(whoami) start
 
 sudo apt-get update -y
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
-sudo curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update -y
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
@@ -198,7 +198,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: "sudo timedatectl set-timezone America/Montreal", privileged: false, run: "always"
   config.ssh.insert_key = false
   config.vm.box_check_update = false
-  config.vm.network "public_network", bridge: "Default Switch"
+  config.vm.network "public_network", bridge: "myNAT"
 
   config.vm.define "master" do |master|
       master.vm.hostname = "master"
