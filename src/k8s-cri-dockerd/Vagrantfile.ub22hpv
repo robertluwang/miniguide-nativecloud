@@ -1,0 +1,61 @@
+$nic = <<SCRIPT
+
+echo === $(date) Provisioning - nic $1 by $(whoami) start
+
+SUBNET=$(echo $1 | cut -d"." -f1-3)
+
+cat <<EOF | sudo tee /etc/netplan/01-netcfg.yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: no
+      dhcp6: no
+      addresses: [$1/24]
+      routes:
+      - to: default
+        via: ${SUBNET}.1
+      nameservers:
+        addresses: [8.8.8.8,1.1.1.1]
+EOF
+
+sudo unlink /etc/resolv.conf
+sudo rm /etc/resolv.conf
+cat << EOF | sudo tee /etc/resolv.conf
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+EOF
+
+sudo chattr +i /etc/resolv.conf
+
+cat /etc/netplan/01-netcfg.yaml
+cat /etc/resolv.conf
+
+sudo netplan apply
+sleep 30 
+echo eth0 setting
+
+ip addr
+ip route
+ping -c 2 google.ca
+
+echo === $(date) Provisioning - nic $1 by $(whoami) end
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu2204"
+  config.vm.provision "shell", inline: "sudo timedatectl set-timezone America/Montreal", privileged: false, run: "always"
+  config.ssh.insert_key = false
+  config.vm.box_check_update = false
+  config.vm.network "public_network", bridge: "myNAT"
+
+  config.vm.define "master" do |master|
+      master.vm.hostname = "ub22hpv"
+      master.vm.provider "hyperv" do |v|
+          v.vmname = "ub22hpv"
+          v.memory = 1024
+      end
+      master.vm.provision "shell", inline: $nic, args: "192.168.120.20", privileged: false
+  end
+end
