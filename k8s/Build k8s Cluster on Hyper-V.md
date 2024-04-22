@@ -411,8 +411,8 @@ It looks good,
 ```
 vagrant@master:~$ k get node
 NAME     STATUS   ROLES           AGE   VERSION
-master   Ready    control-plane   31m   v1.30
-worker   Ready    <none>          19m   v1.30
+master   Ready    control-plane   31m   v1.30.0
+worker   Ready    <none>          19m   v1.30.0
 vagrant@master:~$ k get pod -A
 NAMESPACE          NAME                                       READY   STATUS    RESTARTS   AGE
 calico-apiserver   calico-apiserver-7868f6b748-glqdx          1/1     Running   0          11m
