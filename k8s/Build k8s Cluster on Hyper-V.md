@@ -502,7 +502,7 @@ We make the k8s 2 nodes cluster setup automation smoothly using Vagrant:
 
 ## About Me
 
-Hey! I am Robert Wang, work@Ericsson, live in Montreal, QC, CA.
+Hey! I am Robert Wang, live in Montreal.
 
 More simple and more efficient.
 
