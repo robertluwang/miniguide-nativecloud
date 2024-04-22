@@ -572,7 +572,7 @@ So far the one single node k8s cluster lab is ready on WSL2:
 
 ## About Me
 
-Hey! I am Robert Wang, work@Ericsson, live in Montreal, QC, CA.
+Hey! I am Robert Wang, live in Montreal.
 
 More simple and more efficient.
 
