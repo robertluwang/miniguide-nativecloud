@@ -37,7 +37,7 @@ cat /etc/netplan/01-netcfg.yaml
 cat /etc/resolv.conf
 
 sudo netplan apply
-
+sleep 30 
 echo eth0 setting
 
 ip addr
